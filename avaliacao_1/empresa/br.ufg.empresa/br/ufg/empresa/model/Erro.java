@@ -1,8 +1,9 @@
-package br.ufg.empresa.dto;
+package br.ufg.empresa.model;
 
 import java.io.Serializable;
 
 import br.ufg.empresa.exception.IdInexistenteException;
+import br.ufg.empresa.utils.Constantes;
 
 public class Erro implements Serializable {
 
@@ -14,9 +15,9 @@ public class Erro implements Serializable {
 			this.erro = exception.getMessage();
 
 			if (exception instanceof IdInexistenteException) {
-				this.codeHttp = 404;
+				this.codeHttp = Constantes.CODIGO_ERRO_HTTP_NOT_FOUND;
 			} else {
-				this.codeHttp = 500;
+				this.codeHttp = Constantes.CODIGO_ERRO_HTTP_INTERNO_NO_SERVIDOR;
 			}
 		}
 	}

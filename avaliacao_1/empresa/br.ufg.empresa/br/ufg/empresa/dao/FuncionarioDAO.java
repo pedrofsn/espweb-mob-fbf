@@ -43,28 +43,23 @@ public class FuncionarioDAO {
 		return lista;
 	}
 
-	public Funcionario getFuncionario(Connection conn, Integer id)
+	public Funcionario getFuncionario(Connection conn, int id)
 			throws SQLException {
+		PreparedStatement preparedStatement = conn
+				.prepareStatement("SELECT * FROM funcionarios where id = ?");
+		preparedStatement.setInt(1, id);
 
-		if (id == null) {
-			throw new SQLException("Nenhum ID informado!");
-
-		} else {
-			PreparedStatement preparedStatement = conn
-					.prepareStatement("SELECT * FROM funcionarios where id = ?");
-			preparedStatement.setInt(1, id);
-
-			ResultSet resultSet = preparedStatement.executeQuery();
-
-			while (resultSet.next()) {
-				Funcionario obj = new Funcionario();
-				obj.setNome(resultSet.getString("nome"));
-				obj.setId(resultSet.getInt("id"));
-				obj.setCargo(resultSet.getString("cargo"));
-			}
+		ResultSet resultSet = preparedStatement.executeQuery();
+		Funcionario obj = null;
+		
+		while (resultSet.next()) {
+			obj = new Funcionario();
+			obj.setNome(resultSet.getString("nome"));
+			obj.setId(resultSet.getInt("id"));
+			obj.setCargo(resultSet.getString("cargo"));
 		}
 
-		return null;
+		return obj;
 	}
 
 }

@@ -2,8 +2,8 @@ package br.ufg.empresa.exception;
 
 public class IdInexistenteException extends Exception {
 	
-	public IdInexistenteException() {
-		super("ID não existente");
+	public IdInexistenteException(String idString) {
+		super(String.format("Nenhum resultado encontrado com o ID '%s'", idString));
 	}
 
 }
