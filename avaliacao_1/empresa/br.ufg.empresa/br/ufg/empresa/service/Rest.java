@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import br.ufg.empresa.dal.FuncionarioDAL;
+import br.ufg.empresa.dto.Erro;
 import br.ufg.empresa.model.Funcionario;
 
 import com.google.gson.Gson;
@@ -23,16 +24,21 @@ public class Rest {
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
 	public Response get() {
-		String json = null;
-
 		try {
 			List<Funcionario> lista = new FuncionarioDAL().getFuncionarios();
-			json = GSON.toJson(lista);
+			String json = GSON.toJson(lista);
+			return Response.status(200).entity(json).build();
 		} catch (Exception e) {
-			e.printStackTrace();
+			return retornarErro(e);
 		}
-
-		return Response.status(200).entity(json).build();
 	}
 
+	private Response retornarErro(Exception e) {
+		if (e != null) {
+			Erro erro = new Erro(e);
+			String json = GSON.toJson(erro);
+			return Response.status(erro.getCodeHttp()).entity(json).build();
+		}
+		return null;
+	}
 }
