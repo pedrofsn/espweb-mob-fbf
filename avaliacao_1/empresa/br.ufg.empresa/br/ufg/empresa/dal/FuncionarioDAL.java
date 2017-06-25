@@ -24,12 +24,13 @@ public class FuncionarioDAL {
 		DatabaseConnection databaseConnection = new DatabaseConnection();
 		Connection connection = databaseConnection.getConnection();
 		FuncionarioDAO dao = new FuncionarioDAO();
-		Funcionario funcionario = dao.getFuncionario(connection, id);
+		return dao.getFuncionario(connection, id);
+	}
 
-		if (funcionario != null) {
-			return funcionario;
-		} else {
-			throw new IdInexistenteException(String.valueOf(id));
-		}
+	public Funcionario postFuncionario(Funcionario funcionario) throws Exception {
+		DatabaseConnection databaseConnection = new DatabaseConnection();
+		Connection connection = databaseConnection.getConnection();
+		FuncionarioDAO dao = new FuncionarioDAO();
+		return dao.cadastrarFuncionario(connection, funcionario);
 	}
 }

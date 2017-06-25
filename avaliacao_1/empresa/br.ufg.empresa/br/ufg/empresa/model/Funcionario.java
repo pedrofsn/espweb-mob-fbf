@@ -5,26 +5,30 @@ import java.io.Serializable;
 public class Funcionario implements Serializable {
 
 	private static final long serialVersionUID = -6007123816065785663L;
-	
-	private int id;
+
+	private Integer id;
 	private String nome;
 	private String cargo;
 
 	public Funcionario() {
 	}
 
-	public Funcionario(int id, String nome, String cargo) {
+	public Funcionario(Integer id, String nome, String cargo) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.cargo = cargo;
 	}
 
-	public int getId() {
+	public boolean isValidoParaCadastro() {
+		return id == null && nome != null && cargo != null;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 

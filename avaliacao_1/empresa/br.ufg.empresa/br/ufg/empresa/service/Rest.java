@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -13,6 +14,7 @@ import br.ufg.empresa.dal.FuncionarioDAL;
 import br.ufg.empresa.dto.ErroDTO;
 import br.ufg.empresa.dto.ListaFuncionarioDTO;
 import br.ufg.empresa.dto.ObjetoFuncionarioDTO;
+import br.ufg.empresa.exception.FormatoInvalidoException;
 import br.ufg.empresa.model.Erro;
 import br.ufg.empresa.model.Funcionario;
 
@@ -27,7 +29,7 @@ public class Rest {
 	@Path("/funcionarios")
 	@Consumes("application/json; charset=UTF-8")
 	@Produces("application/json; charset=UTF-8")
-	public Response get() {
+	public Response getAll() {
 		try {
 			List<Funcionario> lista = new FuncionarioDAL().getFuncionarios();
 			ListaFuncionarioDTO response = new ListaFuncionarioDTO(lista);
@@ -45,6 +47,26 @@ public class Rest {
 	public Response get(@PathParam("id") int id) {
 		try {
 			Funcionario obj = new FuncionarioDAL().getFuncionario(id);
+			ObjetoFuncionarioDTO response = new ObjetoFuncionarioDTO(obj);
+			String json = GSON.toJson(response);
+			return Response.status(200).entity(json).build();
+		} catch (Exception e) {
+			return retornarErro(e);
+		}
+	}
+
+	@POST
+	@Path("/funcionario")
+	@Consumes("application/json; charset=UTF-8")
+	@Produces("application/json; charset=UTF-8")
+	public Response post(Funcionario funcionario) {
+		try {
+			
+			if(funcionario == null || !funcionario.isValidoParaCadastro()) {
+				return retornarErro(new FormatoInvalidoException());
+			}
+			
+			Funcionario obj = new FuncionarioDAL().postFuncionario(funcionario);
 			ObjetoFuncionarioDTO response = new ObjetoFuncionarioDTO(obj);
 			String json = GSON.toJson(response);
 			return Response.status(200).entity(json).build();

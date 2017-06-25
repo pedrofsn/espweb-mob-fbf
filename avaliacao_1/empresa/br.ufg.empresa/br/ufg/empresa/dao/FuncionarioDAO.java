@@ -51,15 +51,30 @@ public class FuncionarioDAO {
 
 		ResultSet resultSet = preparedStatement.executeQuery();
 		Funcionario obj = null;
-		
+
 		while (resultSet.next()) {
 			obj = new Funcionario();
-			obj.setNome(resultSet.getString("nome"));
 			obj.setId(resultSet.getInt("id"));
+			obj.setNome(resultSet.getString("nome"));
 			obj.setCargo(resultSet.getString("cargo"));
 		}
 
 		return obj;
+	}
+
+	public Funcionario cadastrarFuncionario(Connection conn,
+			Funcionario funcionario) throws SQLException {
+		PreparedStatement preparedStatement = conn
+				.prepareStatement("INSERT INTO funcionarios (nome, cargo) VALUES (? , ?) returning id;");
+		preparedStatement.setString(1, funcionario.getNome());
+		preparedStatement.setString(2, funcionario.getCargo());
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		if (resultSet.next()) {
+			funcionario.setId(resultSet.getInt("id"));
+		}
+		
+		return funcionario;
 	}
 
 }
