@@ -73,7 +73,7 @@ Retorno:
 }
 ```
 
-## PUT /funcionario/{id}
+## PUT /funcionario
 Atualizar os dados de um funcionário específico.
 
 Body:
