@@ -37,7 +37,7 @@ Retorno:
 }
 ```
 
-## GET /funcionarios/{id}
+## GET /funcionario/{id}
 Obter um funcionário específico através de um ID.
 
 Retorno:
@@ -93,5 +93,15 @@ Retorno:
     "nome": "Pedro F. S. Neto",
     "cargo": "Fullstack Developer"
   }
+}
+```
+
+## DELETE /funcionario/{id}
+Deletar um funcionário específico através de um ID.
+
+Retorno:
+```
+{
+    "sucesso" : true
 }
 ```
