@@ -64,17 +64,42 @@ public class FuncionarioDAO {
 
 	public Funcionario cadastrarFuncionario(Connection conn,
 			Funcionario funcionario) throws SQLException {
-		PreparedStatement preparedStatement = conn
-				.prepareStatement("INSERT INTO funcionarios (nome, cargo) VALUES (? , ?) returning id;");
+		PreparedStatement preparedStatement = conn.prepareStatement(
+				"INSERT INTO funcionarios (nome, cargo) VALUES (? , ?)",
+				PreparedStatement.RETURN_GENERATED_KEYS);
 		preparedStatement.setString(1, funcionario.getNome());
 		preparedStatement.setString(2, funcionario.getCargo());
-		ResultSet resultSet = preparedStatement.executeQuery();
+		preparedStatement.executeUpdate();
 
-		if (resultSet.next()) {
-			funcionario.setId(resultSet.getInt("id"));
+		ResultSet rs = preparedStatement.getGeneratedKeys();
+
+		if (rs.next()) {
+			funcionario.setId(rs.getInt(1));
 		}
-		
+
 		return funcionario;
+	}
+
+	public Funcionario atualizarFuncionario(Connection conn,
+			Funcionario funcionario) throws SQLException {
+		PreparedStatement preparedStatement = conn
+				.prepareStatement("UPDATE funcionarios SET nome = ?, cargo = ? where id = ?");
+		preparedStatement.setString(1, funcionario.getNome());
+		preparedStatement.setString(2, funcionario.getCargo());
+		preparedStatement.setInt(3, funcionario.getId());
+		int caso = preparedStatement.executeUpdate();
+
+		return (caso == 1) ? funcionario : new Funcionario();
+	}
+
+	public boolean deletarFuncionario(Connection conn, int id)
+			throws SQLException {
+		PreparedStatement preparedStatement = conn
+				.prepareStatement("delete from funcionarios where id = ?");
+		preparedStatement.setInt(1, id);
+		int caso = preparedStatement.executeUpdate();
+
+		return caso == 1;
 	}
 
 }

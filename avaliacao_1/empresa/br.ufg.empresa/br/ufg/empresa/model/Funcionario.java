@@ -24,6 +24,10 @@ public class Funcionario implements Serializable {
 		return id == null && nome != null && cargo != null;
 	}
 
+	public boolean isValidoParaEdicao() {
+		return id != null && nome != null && cargo != null;
+	}
+
 	public Integer getId() {
 		return id;
 	}
