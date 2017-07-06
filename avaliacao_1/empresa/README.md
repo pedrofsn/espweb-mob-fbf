@@ -1,7 +1,10 @@
 # Instruções para executar o projeto
 1 - Carregar o projeto como "Maven Project" no eclipse; 
+
 2 - Subir o mysql ou outro banco de preferência (necessário fazer ajustes do driver na classe DatabaseConnection.java);
+
 3 - Criar um banco de dados chamado "empresa";
+
 4 - Criar a tabela com o script abaixo;
 
 ```
