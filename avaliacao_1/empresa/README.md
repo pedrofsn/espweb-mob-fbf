@@ -11,7 +11,8 @@
 Se tudo ocorrer bem, a URL http://localhost:8080/empresa/api/funcionarios deverá trazer o seguinte retorno:
 ```
 {
-  funcionarios: [ ]
+    "total": 0,
+    "funcionarios": []
 }
 ```
 
