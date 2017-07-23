@@ -25,9 +25,12 @@ public class FuncionarioDAO {
 
 				while (resultSet.next()) {
 					Funcionario obj = new Funcionario();
-					obj.setNome(resultSet.getString("nome"));
 					obj.setId(resultSet.getInt("id"));
-					obj.setCargo(resultSet.getString("cargo"));
+					obj.setNome(resultSet.getString("nome"));
+					obj.setEmail(resultSet.getString("email"));
+					obj.setCpf(resultSet.getString("cpf"));
+					obj.setTelefone(resultSet.getString("telefone"));
+					obj.setNascimento(resultSet.getDate("nascimento"));
 					lista.add(obj);
 				}
 
@@ -56,7 +59,10 @@ public class FuncionarioDAO {
 			obj = new Funcionario();
 			obj.setId(resultSet.getInt("id"));
 			obj.setNome(resultSet.getString("nome"));
-			obj.setCargo(resultSet.getString("cargo"));
+			obj.setEmail(resultSet.getString("email"));
+			obj.setCpf(resultSet.getString("cpf"));
+			obj.setTelefone(resultSet.getString("telefone"));
+			obj.setNascimento(resultSet.getDate("nascimento"));
 		}
 
 		return obj;
@@ -65,10 +71,13 @@ public class FuncionarioDAO {
 	public Funcionario cadastrarFuncionario(Connection conn,
 			Funcionario funcionario) throws SQLException {
 		PreparedStatement preparedStatement = conn.prepareStatement(
-				"INSERT INTO funcionarios (nome, cargo) VALUES (? , ?)",
+				"INSERT INTO funcionarios (nome, email, cpf, nascimento, telefone) VALUES (? , ? , ? , ?, ?)",
 				PreparedStatement.RETURN_GENERATED_KEYS);
 		preparedStatement.setString(1, funcionario.getNome());
-		preparedStatement.setString(2, funcionario.getCargo());
+		preparedStatement.setString(2, funcionario.getEmail());
+		preparedStatement.setString(3, funcionario.getCpf());
+		preparedStatement.setDate(4, funcionario.getNascimento());
+		preparedStatement.setString(5, funcionario.getTelefone());
 		preparedStatement.executeUpdate();
 
 		ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -83,10 +92,13 @@ public class FuncionarioDAO {
 	public Funcionario atualizarFuncionario(Connection conn,
 			Funcionario funcionario) throws SQLException {
 		PreparedStatement preparedStatement = conn
-				.prepareStatement("UPDATE funcionarios SET nome = ?, cargo = ? where id = ?");
+				.prepareStatement("UPDATE funcionarios SET nome = ?, email = ?, cpf = ?, nascimento = ?, telefone = ? where id = ?");
 		preparedStatement.setString(1, funcionario.getNome());
-		preparedStatement.setString(2, funcionario.getCargo());
-		preparedStatement.setInt(3, funcionario.getId());
+		preparedStatement.setString(2, funcionario.getEmail());
+		preparedStatement.setString(3, funcionario.getCpf());
+		preparedStatement.setDate(4, funcionario.getNascimento());
+		preparedStatement.setString(5, funcionario.getTelefone());
+		preparedStatement.setInt(6, funcionario.getId());
 		int caso = preparedStatement.executeUpdate();
 
 		return (caso == 1) ? funcionario : new Funcionario();
